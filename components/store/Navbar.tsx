@@ -7,7 +7,8 @@ import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const { user, logout, cartCount } = useApp();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   return (
     <nav className={styles.nav}>
@@ -42,25 +43,25 @@ export default function Navbar() {
           {/* Auth */}
           {user ? (
             <div className={styles.userMenu}>
-              <button className={styles.userBtn} onClick={() => setMenuOpen(!menuOpen)}>
+              <button className={styles.userBtn} onClick={() => setUserMenuOpen(!userMenuOpen)}>
                 <span className={styles.userAvatar}>{user.name.charAt(0).toUpperCase()}</span>
                 <span className={styles.userName}>{user.name.split(' ')[0]}</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </button>
-              {menuOpen && (
+              {userMenuOpen && (
                 <div className={styles.dropdown}>
                   {user.role === 'admin' && (
-                    <Link href="/admin" className={styles.dropdownItem} onClick={() => setMenuOpen(false)}>
+                    <Link href="/admin" className={styles.dropdownItem} onClick={() => setUserMenuOpen(false)}>
                       🛠 Admin Paneli
                     </Link>
                   )}
-                  <Link href="/orders" className={styles.dropdownItem} onClick={() => setMenuOpen(false)}>
+                  <Link href="/orders" className={styles.dropdownItem} onClick={() => setUserMenuOpen(false)}>
                     📦 Siparişlerim
                   </Link>
                   <hr className={styles.dropdownDivider}/>
-                  <button className={styles.dropdownItem} onClick={() => { logout(); setMenuOpen(false); }}>
+                  <button className={styles.dropdownItem} onClick={() => { logout(); setUserMenuOpen(false); }}>
                     🚪 Çıkış Yap
                   </button>
                 </div>
@@ -74,7 +75,7 @@ export default function Navbar() {
           )}
 
           {/* Mobile menu */}
-          <button className={styles.mobileMenuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+          <button className={styles.mobileMenuBtn} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6"/>
               <line x1="3" y1="12" x2="21" y2="12"/>
@@ -83,6 +84,72 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className={styles.mobileDrawerOverlay} onClick={() => setMobileMenuOpen(false)}>
+          <div className={styles.mobileDrawer} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.mobileDrawerHeader}>
+              <span className={styles.drawerTitle}>Menü</span>
+              <button className={styles.closeBtn} onClick={() => setMobileMenuOpen(false)}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            <div className={styles.mobileDrawerBody}>
+              <div className={styles.mobileLinks}>
+                <Link href="/" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>
+                  <span>🏠</span> Ürünler
+                </Link>
+                {user && (
+                  <Link href="/orders" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>
+                    <span>📦</span> Siparişlerim
+                  </Link>
+                )}
+              </div>
+
+              <div className={styles.drawerDivider} />
+
+              <div className={styles.mobileDrawerAuth}>
+                {user ? (
+                  <div className={styles.mobileUserSection}>
+                    <div className={styles.mobileUserHeader}>
+                      <span className={styles.userAvatar}>{user.name.charAt(0).toUpperCase()}</span>
+                      <div className={styles.mobileUserInfo}>
+                        <span className={styles.mobileUserName}>{user.name}</span>
+                        <span className={styles.mobileUserRole}>{user.role === 'admin' ? 'Yönetici' : 'Müşteri'}</span>
+                      </div>
+                    </div>
+                    {user.role === 'admin' && (
+                      <Link href="/admin" className={styles.mobileLink} onClick={() => setMobileMenuOpen(false)}>
+                        <span>🛠</span> Admin Paneli
+                      </Link>
+                    )}
+                    <button 
+                      className={`${styles.mobileLink} ${styles.logoutLink}`} 
+                      onClick={() => { logout(); setMobileMenuOpen(false); }}
+                    >
+                      <span>🚪</span> Çıkış Yap
+                    </button>
+                  </div>
+                ) : (
+                  <div className={styles.mobileAuthButtons}>
+                    <Link href="/login" className="btn btn-secondary w-full justify-center" onClick={() => setMobileMenuOpen(false)}>
+                      Giriş Yap
+                    </Link>
+                    <Link href="/register" className="btn btn-primary w-full justify-center" onClick={() => setMobileMenuOpen(false)}>
+                      Kayıt Ol
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

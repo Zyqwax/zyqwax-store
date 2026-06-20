@@ -9,3 +9,12 @@
   overflow-x: hidden;
   min-width: 0;
 }
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  .main {
+    padding-top: 60px;
+  }
+}
