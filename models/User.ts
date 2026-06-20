@@ -58,7 +58,9 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string) 
 
 // Şifreyi JSON'dan çıkar
 UserSchema.set('toJSON', {
-  transform: (_doc, ret) => {
+  // Transform the document to JSON and remove the password field for security
+  transform: (_doc, ret: any) => {
+    // Ensure the password property is removed without TypeScript errors
     delete ret.password;
     return ret;
   },

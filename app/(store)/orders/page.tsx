@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './orders.module.css';
@@ -25,7 +25,7 @@ interface Order {
   createdAt: string;
 }
 
-export default function OrdersPage() {
+function OrdersContent() {
   const searchParams = useSearchParams();
   const successOrder = searchParams.get('success');
   const [orders, setOrders] = useState<Order[]>([]);
@@ -110,5 +110,20 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={
+      <div className={styles.container}>
+        <h1>Siparişlerim</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
+          <div className="spinner"></div>
+        </div>
+      </div>
+    }>
+      <OrdersContent />
+    </Suspense>
   );
 }

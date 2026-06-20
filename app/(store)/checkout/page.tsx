@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useApp } from '@/context/AppContext';
@@ -22,6 +22,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isReady, setIsReady] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<CheckoutForm>({
     defaultValues: {
@@ -30,9 +31,22 @@ export default function CheckoutPage() {
     },
   });
 
-  if (cart.length === 0) {
-    router.push('/cart');
-    return null;
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (isReady && cart.length === 0) {
+      router.push('/cart');
+    }
+  }, [isReady, cart, router]);
+
+  if (!isReady || cart.length === 0) {
+    return (
+      <div className={styles.container} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   const onSubmit = async (data: CheckoutForm) => {

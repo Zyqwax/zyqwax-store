@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import styles from './auth.module.css';
 
-export default function LoginPage() {
+function LoginForm() {
   const { login } = useApp();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,55 +31,67 @@ export default function LoginPage() {
   };
 
   return (
+    <div className={styles.card}>
+      <div className={styles.logoMark}>⬡</div>
+      <h1 className={styles.title}>Hoş Geldiniz</h1>
+      <p className={styles.subtitle}>Hesabınıza giriş yapın</p>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        {error && <div className="alert alert-error">{error}</div>}
+
+        <div className="form-group">
+          <label className="form-label">E-posta</label>
+          <input
+            type="email"
+            className="form-input"
+            placeholder="ornek@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Şifre</label>
+          <input
+            type="password"
+            className="form-input"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-full" disabled={loading} style={{ justifyContent: 'center', marginTop: '8px' }}>
+          {loading ? (
+            <>
+              <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px' }}></div>
+              Giriş Yapılıyor...
+            </>
+          ) : 'Giriş Yap'}
+        </button>
+      </form>
+
+      <p className={styles.switchAuth}>
+        Hesabınız yok mu?{' '}
+        <Link href="/register" className={styles.switchLink}>Kayıt Ol</Link>
+      </p>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.logoMark}>⬡</div>
-        <h1 className={styles.title}>Hoş Geldiniz</h1>
-        <p className={styles.subtitle}>Hesabınıza giriş yapın</p>
-
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {error && <div className="alert alert-error">{error}</div>}
-
-          <div className="form-group">
-            <label className="form-label">E-posta</label>
-            <input
-              type="email"
-              className="form-input"
-              placeholder="ornek@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Şifre</label>
-            <input
-              type="password"
-              className="form-input"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full" disabled={loading} style={{ justifyContent: 'center', marginTop: '8px' }}>
-            {loading ? (
-              <>
-                <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px' }}></div>
-                Giriş Yapılıyor...
-              </>
-            ) : 'Giriş Yap'}
-          </button>
-        </form>
-
-        <p className={styles.switchAuth}>
-          Hesabınız yok mu?{' '}
-          <Link href="/register" className={styles.switchLink}>Kayıt Ol</Link>
-        </p>
-      </div>
+      <Suspense fallback={
+        <div className={styles.card} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
+          <div className="spinner"></div>
+        </div>
+      }>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
