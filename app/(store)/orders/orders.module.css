@@ -1,0 +1,97 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.container h1 {
+  margin-bottom: 8px;
+}
+
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.orderCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color var(--transition);
+}
+
+.orderCard:hover {
+  border-color: var(--border-hover);
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.orderNumber {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-accent);
+  font-family: 'Courier New', monospace;
+}
+
+.orderDate {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.orderItemMeta {
+  color: var(--text-muted);
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.orderInfo {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.payBadge {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.tracking {
+  font-size: 0.78rem;
+  color: var(--info);
+  font-family: 'Courier New', monospace;
+}
+
+.orderTotal {
+  font-size: 1.1rem;
+  font-weight: 700;
+}

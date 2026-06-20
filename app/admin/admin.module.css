@@ -1,0 +1,37 @@
+/* Shared admin page styles */
+.page {
+  padding: 32px;
+  max-width: 1400px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pageHeader h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.pageSubtitle {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.searchBar {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .page { padding: 16px; }
+  .pageHeader { flex-direction: column; }
+}
